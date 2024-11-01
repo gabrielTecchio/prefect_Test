@@ -4,6 +4,27 @@ from datetime import datetime
 from google.oauth2 import service_account
 from pandas_gbq import to_gbq
 from prefect import flow, task
+import requests
+
+# Get BCB reponse
+@task
+def requestReponses():
+    # Make the GET request
+    url = f"https://api.bcb.gov.br/dados/serie/bcdata.sgs.11/dados?formato=json"
+    response = requests.get(url)
+
+    # Check if the request was successful (status code 200)
+    if response.status_code == 200:
+        # Parse the JSON response
+        data = response.json()
+        # print(data)
+        df = pd.DataFrame(data)
+        valor = df.iloc[-1]["Valor"]
+        print(f"BCB return for Value: {valor}")
+        return valor
+    else:
+        print(f"Request failed with status code {response.status_code}")
+        return None
 
 # Function to create data to BigQuery
 @task
@@ -40,8 +61,9 @@ def myFlow():
 
     # Authenticate using the service account file
     credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE)
-
-    df = create_msg("New msg!")
+    
+    new_value = requestReponses()
+    df = create_msg(f"New msg BCB return {new_value}!")
     finalResult = send_to_gbq(df, PROJECT_ID, DATASET_NAME, TABLE_NAME, credentials)
     print(finalResult)
 
