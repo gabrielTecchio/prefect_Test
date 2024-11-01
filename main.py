@@ -61,9 +61,9 @@ def myFlow():
 
     # Authenticate using the service account file
     credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE)
-    
+
     new_value = requestReponses()
-    df = create_msg(f"New msg BCB return {new_value}!")
+    df = create_msg(f"New msg BCB answer {new_value}!")
     finalResult = send_to_gbq(df, PROJECT_ID, DATASET_NAME, TABLE_NAME, credentials)
     print(finalResult)
 
