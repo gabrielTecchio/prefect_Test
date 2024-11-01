@@ -19,8 +19,8 @@ def requestReponses():
         data = response.json()
         # print(data)
         df = pd.DataFrame(data)
-        print(df.head())
-        valor = df.iloc[-1]["Valor"]
+        print(df.head(2))
+        valor = df.iloc[-1]["valor"]
         print(f"BCB return for Value: {valor}")
         return valor
     else:
