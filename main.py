@@ -26,12 +26,12 @@ def sendToBQ(dataFrame: pd.core.frame.DataFrame, projID:str, dados:str, tabela:s
     pandas_gbq.to_gbq(dataFrame, f"{projID}.{dados}.{tabela}", if_exists="replace", project_id=projID)
 
 @flow(log_prints=True)
-def flowBCBtoGBQ(codigo_serie: int):
+def flowBCBtoGBQ(codigo_serie):
     #codigo_serie = 21774 # 11 = SELIC; 1207 = PIB; 21774 = População
     #codigo_serie = None
     # while not codigo_serie:
         #codigo_serie: int = int(input("Enter a number (11 = SELIC; 1207 = PIB; 21774 = População; 11426 = IPCA): "))
-    match codigo_serie:
+    match int(codigo_serie):
             case 11:
                 print("SELIC")
                 tabela = "tabela-selic-teste"
