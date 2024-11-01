@@ -3,7 +3,7 @@ import pandas as pd
 from datetime import datetime
 from google.oauth2 import service_account
 from pandas_gbq import to_gbq
-from prefect import flow, task, get_run_logger
+from prefect import flow, task
 
 # Function to create data to BigQuery
 @task
@@ -41,7 +41,7 @@ def myFlow():
     # Authenticate using the service account file
     credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE)
 
-    df = create_msg("This is a log msg from myFlow!")
+    df = create_msg()
     finalResult = send_to_gbq(df, PROJECT_ID, DATASET_NAME, TABLE_NAME, credentials)
     print(finalResult)
 
