@@ -1,0 +1,12 @@
+# Core dependencies
+pandas
+requests
+prefect
+
+# Google BigQuery and OAuth dependencies
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+google-api-python-client
+google-cloud-bigquery
+pandas-gbq

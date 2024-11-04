@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  prefect-worker:
+    image: my-prefect-worker
+    environment:
+      - PREFECT_API_URL=http://host.docker.internal:4200/api
+      - GOOGLE_APPLICATION_CREDENTIALS=/tmp/key.json
+    volumes:
+      - ./key.json:/tmp/key.json
+    ports:
+      "4200:4200"

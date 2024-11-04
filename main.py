@@ -20,7 +20,7 @@ def requestReponses():
         # print(data)
         df = pd.DataFrame(data)
         print(df.head(2))
-        valor = df.iloc[-1]["valor"]
+        valor = df.iloc[-1]["valor"] 
         print(f"BCB return for Value: {valor}")
         return valor
     else:
@@ -41,13 +41,13 @@ def create_msg(msg: str = "This is a log msg from function create_msg!") -> pd.D
 
 # Function to write data to BigQuery
 @task
-def send_to_gbq(df, PROJECT_ID, DATASET_NAME, TABLE_NAME, cred):
+def send_to_gbq(df, PROJECT_ID, DATASET_NAME, TABLE_NAME):
     print("Send data to GBQ!")
     # Define the full table ID
     table_id = f"{DATASET_NAME}.{TABLE_NAME}"
 
     # Write the data to BigQuery, replacing the table if it doesn't exist
-    to_gbq(df, table_id, project_id=PROJECT_ID, if_exists="append", credentials=cred)
+    to_gbq(df, table_id, project_id=PROJECT_ID, if_exists="append")
     return("Data logged to BigQuery successfully.")
 
 @flow(log_prints=True)
@@ -58,14 +58,14 @@ def myFlow():
     TABLE_NAME = "test_log"  # Replace with your desired table name
 
     # Path to your Google Cloud service account key file
-    SERVICE_ACCOUNT_FILE = "key.json"  # Replace with the path to your JSON key file
+    #SERVICE_ACCOUNT_FILE = "tmp/key.json"  # Replace with the path to your JSON key file
 
     # Authenticate using the service account file
-    credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE)
+    #credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE)
 
     new_value = requestReponses()
     df = create_msg(f"New msg BCB answer {new_value}!")
-    finalResult = send_to_gbq(df, PROJECT_ID, DATASET_NAME, TABLE_NAME, credentials)
+    finalResult = send_to_gbq(df, PROJECT_ID, DATASET_NAME, TABLE_NAME)#, credentials)
     print(finalResult)
 
 # Run the function
