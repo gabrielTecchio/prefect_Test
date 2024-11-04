@@ -47,7 +47,7 @@ def send_to_gbq(df, PROJECT_ID, DATASET_NAME, TABLE_NAME):
     table_id = f"{DATASET_NAME}.{TABLE_NAME}"
 
     # Write the data to BigQuery, replacing the table if it doesn't exist
-    to_gbq(df, table_id, project_id=PROJECT_ID, if_exists="append")
+    to_gbq(df, table_id, if_exists="append")
     return("Data logged to BigQuery successfully.")
 
 @flow(log_prints=True)
